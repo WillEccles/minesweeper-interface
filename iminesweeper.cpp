@@ -1,5 +1,6 @@
 #include "iminesweeper.h"
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 using namespace minesweeper;
@@ -14,6 +15,7 @@ void minesweeper::game::init(unsigned int startx, unsigned int starty) {
 		mines = width*height/4;
 	}
 
+	srand(time(NULL));
 	// set up all mines
 	for (unsigned int i = 0; i < mines; i++) {
 		int x;
@@ -80,10 +82,6 @@ void minesweeper::game::init(unsigned int startx, unsigned int starty) {
 						board[x][y].mineCount++;
 				}
 			}
-
-#ifdef DEBUG
-			board[x][y].revealed = true;
-#endif
 		}
 	}
 }
@@ -95,6 +93,7 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 		if (board[x][y].revealed || board[x][y].flagged)
 			return false;
 		if (board[x][y].mine) {
+			std::cout << "lost\n";
 			lost = true;
 			// set all tiles to be revealed
 			for (unsigned int r = 0; r < height; r++)
@@ -110,7 +109,7 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 	board[x][y].revealed = true;
 
 	// now we check if the revealed tile is blank, and if it is, recursively reveal all other ones around it
-	if (!board[x][y].mine && !board[x][y].mineCount) {
+	if (!board[x][y].mine && board[x][y].mineCount == 0) {
 		if (x > 0 && y > 0)
 			reveal(x-1, y-1); // top left
 		if (x > 0)
@@ -152,7 +151,6 @@ void minesweeper::game::reset() {
 	lost = false;
 }
 
-#ifdef DEBUG
 void minesweeper::game::debugPrint() {
 	// print each board space as a char
 	for (unsigned int row = 0; row < height; row++) {
@@ -167,4 +165,3 @@ void minesweeper::game::debugPrint() {
 		std::cout << '\n';
 	}
 }
-#endif

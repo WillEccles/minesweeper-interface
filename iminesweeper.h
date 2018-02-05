@@ -1,8 +1,6 @@
 #ifndef IMINESWEEPER
 #define IMINESWEEPER
 
-#define DEBUG
-
 #include <vector>
 
 namespace minesweeper {
@@ -58,10 +56,8 @@ namespace minesweeper {
 			unsigned int getMines() { return mines; };
 			int getFlagCount() { return flagged_count; };
 
-#ifdef DEBUG
 			// prints the whole board, all revealed, for debugging purposes
 			void debugPrint();
-#endif
 	};
 };
 
