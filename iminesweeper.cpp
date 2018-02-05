@@ -24,62 +24,62 @@ void minesweeper::game::init(unsigned int startx, unsigned int starty) {
 		do {
 			x = rand() % width;
 			y = rand() % height;
-		} while (board[x][y].mine || (x == startx || y == starty));
+		} while (board[x][y].mine || ((x >= (int)startx-1 && x <= (int)startx+1) && (y >= (int)starty-1 && y <= (int)starty+1)));
 
-		board[x][y].mine = true;
+		board[y][x].mine = true;
 	}
 
 	// set up all other tiles
-	for (unsigned int x = 0; x < width; x++) {
-		for (unsigned int y = 0; y < height; y++) {
-			if (!board[x][y].mine) {
+	for (unsigned int c = 0; c < width; c++) {
+		for (unsigned int r = 0; r < height; r++) {
+			if (!board[c][r].mine) {
 				// left side
-				if (x > 0) {
-					if (y > 0) {
+				if (c > 0) {
+					if (r > 0) {
 						// top left
-						if (board[x-1][y-1].mine)
-							board[x][y].mineCount++;
+						if (board[c-1][r-1].mine)
+							board[c][r].mineCount++;
 					}
 
 					// left center
-					if (board[x-1][y].mine)
-						board[x][y].mineCount++;
+					if (board[c-1][r].mine)
+						board[c][r].mineCount++;
 
-					if (y < height-1) {
+					if (r < height-1) {
 						// bottom left
-						if (board[x-1][y+1].mine)
-							board[x][y].mineCount++;
+						if (board[c-1][r+1].mine)
+							board[c][r].mineCount++;
 					}
 				}
 				// right side
-				if (x < width-1) {
-					if (y > 0) {
+				if (c < width-1) {
+					if (r > 0) {
 						// top right
-						if (board[x+1][y-1].mine)
-							board[x][y].mineCount++;
+						if (board[c+1][r-1].mine)
+							board[c][r].mineCount++;
 					}
 
 					// right center
-					if (board[x+1][y].mine)
-						board[x][y].mineCount++;
+					if (board[c+1][r].mine)
+						board[c][r].mineCount++;
 
-					if (y < height-1) {
+					if (r < height-1) {
 						// bottom right
-						if (board[x+1][y+1].mine)
-							board[x][y].mineCount++;
+						if (board[c+1][r+1].mine)
+							board[c][r].mineCount++;
 					}	
 				}
 				// top
-				if (y > 0) {
+				if (r > 0) {
 					// top center
-					if (board[x][y-1].mine)
-						board[x][y].mineCount++;
+					if (board[c][r-1].mine)
+						board[c][r].mineCount++;
 				}
 				// bottom
-				if (y < height-1) {
+				if (r < height-1) {
 					// bottom center
-					if (board[x][y+1].mine)
-						board[x][y].mineCount++;
+					if (board[c][r+1].mine)
+						board[c][r].mineCount++;
 				}
 			}
 		}
@@ -90,9 +90,9 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 	if (x > width-1 || y > height-1)
 		return false;
 	if (started) {
-		if (board[x][y].revealed || board[x][y].flagged)
+		if (board[y][x].revealed || board[y][x].flagged)
 			return false;
-		if (board[x][y].mine) {
+		if (board[y][x].mine) {
 			std::cout << "lost\n";
 			lost = true;
 			// set all tiles to be revealed
@@ -106,10 +106,10 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 		started = true;
 	}
 
-	board[x][y].revealed = true;
+	board[y][x].revealed = true;
 
 	// now we check if the revealed tile is blank, and if it is, recursively reveal all other ones around it
-	if (!board[x][y].mine && board[x][y].mineCount == 0) {
+	if (!board[y][x].mine && board[y][x].mineCount == 0) {
 		if (x > 0 && y > 0)
 			reveal(x-1, y-1); // top left
 		if (x > 0)
@@ -132,9 +132,9 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 }
 
 bool minesweeper::game::toggleflagged(unsigned int x, unsigned int y) {
-	if (board[x][y].revealed) return false;
-	board[x][y].flagged = !board[x][y].flagged;
-	if (board[x][y].flagged)
+	if (board[y][x].revealed) return false;
+	board[y][x].flagged = !board[y][x].flagged;
+	if (board[y][x].flagged)
 		flagged_count++;
 	else
 		flagged_count--;
