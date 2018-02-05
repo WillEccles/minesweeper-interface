@@ -1,5 +1,6 @@
 #include "iminesweeper.h"
 #include <cstdlib>
+#include <iostream>
 
 using namespace minesweeper;
 
@@ -87,14 +88,68 @@ void minesweeper::game::init(unsigned int startx, unsigned int starty) {
 	}
 }
 
-void minesweeper::game::reveal(unsigned int x, unsigned int y) {
+bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
+	if (x > width-1 || y > height-1)
+		return false;
 	if (started) {
-		board[x][y].revealed = true;
+		if (board[x][y].revealed || board[x][y].flagged)
+			return false;
+		if (board[x][y].mine) {
+			lost = true;
+			// set all tiles to be revealed
+			for (unsigned int r = 0; r < height; r++)
+				for (unsigned int c = 0; c < width; c++)
+					board[r][c].revealed = true;
+			return true;
+		}
 	} else {
 		init(x, y);
-		board[x][y].revealed = true;
 		started = true;
 	}
+
+	board[x][y].revealed = true;
+
+	// now we check if the revealed tile is blank, and if it is, recursively reveal all other ones around it
+	if (!board[x][y].mine && !board[x][y].mineCount) {
+		if (x > 0 && y > 0)
+			reveal(x-1, y-1); // top left
+		if (x > 0)
+			reveal(x-1, y); // left center
+		if (y > 0)
+			reveal(x, y-1); // top center
+		if (y < height-1)
+			reveal(x, y+1); // bottom center
+		if (x < width-1)
+			reveal(x+1, y); // right center
+		if (x > 0 && y < height-1)
+			reveal(x-1, y+1); // bottom left
+		if (x < width-1 && y > 0)
+			reveal(x+1, y-1); // top right
+		if (x < width-1 && y < height-1)
+			reveal(x+1, y+1); // bottom right
+	}
+
+	return true;
+}
+
+bool minesweeper::game::toggleflagged(unsigned int x, unsigned int y) {
+	if (board[x][y].revealed) return false;
+	board[x][y].flagged = !board[x][y].flagged;
+	if (board[x][y].flagged)
+		flagged_count++;
+	else
+		flagged_count--;
+	return true;
+}
+
+void minesweeper::game::reset() {
+	board.clear();
+	for (size_t i = 0; i < height; i++) {
+		board.push_back(std::vector<tile_t>(width));
+	}
+	flagged_count = 0;
+	started = false;
+	lost = false;
 }
 
 #ifdef DEBUG
@@ -107,7 +162,7 @@ void minesweeper::game::debugPrint() {
 			else if (board[row][col].mineCount)
 				std::cout << board[row][col].mineCount;
 			else
-				std::cout ' ';
+				std::cout << ' ';
 		}
 		std::cout << '\n';
 	}
