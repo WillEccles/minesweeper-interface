@@ -141,6 +141,27 @@ bool minesweeper::game::toggleflagged(unsigned int x, unsigned int y) {
 	return true;
 }
 
+bool minesweeper::game::hasWon() {
+	unsigned int unrevealed = 0;
+	for (auto row : board) {
+		for (auto tile : row) {
+			if (!tile.revealed) {
+				unrevealed++;
+				if (unrevealed > mines)
+					return false;
+			}
+		}
+	}
+
+	for (auto row : board) {
+		for (auto tile : row) {
+			tile.revealed = true;
+		}
+	}
+
+	return true;
+}
+
 void minesweeper::game::reset() {
 	board.clear();
 	for (size_t i = 0; i < height; i++) {

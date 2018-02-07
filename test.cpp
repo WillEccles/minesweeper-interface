@@ -57,7 +57,7 @@ void printBoard(std::vector<std::vector<tile_t>> board) {
 }
 
 int main(void) {
-	game g(10, 10, 20);
+	game g(10, 10, 2);
 
 	printBoard(g.getBoard());
 
@@ -81,6 +81,13 @@ int main(void) {
 
 		if (!success)
 			std::cout << "please enter a good thingy\n";
+		else {
+			if (g.hasWon()) {
+				printBoard(g.getBoard());
+				std::cout << "You won!\n";
+				break;
+			}
+		}
 		printBoard(g.getBoard());
 	}
 	//g.debugPrint();

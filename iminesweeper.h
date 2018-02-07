@@ -45,6 +45,9 @@ namespace minesweeper {
 
 			// check if the user has lost (from clicking on a mine)
 			bool hasLost() { return lost; };
+
+			// check if the user has won (if there are no unrevealed tiles left that aren't mines
+			bool hasWon();
 			
 			// prepares to start another game, after calling this, call reveal() to start a new game (generate the board and such)
 			void reset();
