@@ -12,3 +12,7 @@ Mostly just drag and drop and include. The example linked above should show you 
 **Java usage:**
 
 Look into how to use the JNI. You will need to take the board and convert it from `std::vector<std::vector<tile_t>>` to something like a char array. In the future, I might make a Java wrapper for this, although you'll likely still need to compile the C++ library yourself still.
+
+**Objective-C usage:**
+
+You can use this natively by simply dragging and dropping it into your Objective-C project and using Objective-C++. Again, make sure C++14 is enabled or else you will get warnings and errors.
