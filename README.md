@@ -3,7 +3,9 @@ A C++ interface for Minesweeper that handles game logic.
 
 ## Usage
 
-For an example of usage (how to set up your game loop, etc), see [`test.cpp`](test.cpp).
+For an example of usage (how to set up your game loop, etc), see [`test.cpp`](tests/cpp/test.cpp).
+
+You can compile the C++ example by running `make` in the root directory of the repository. The output will be a file called `cpptest`, which can be run from your command line.
 
 **C++ usage:**
 
