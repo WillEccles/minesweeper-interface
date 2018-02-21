@@ -1,5 +1,6 @@
 #include "iminesweeper.h"
 #include <iostream>
+#include <cstdio>
 #include <vector>
 #include <string>
 
@@ -20,17 +21,17 @@ void printBoard(std::vector<std::vector<tile_t>> board) {
 	for (unsigned int r = 0; r < board.size(); r++) {
 		std::cout << ' ' << r << " │";
 		for (unsigned int c = 0; c < board[0].size(); c++) {
-			if (board[r][c].revealed) {
-				if (!board[r][c].mine) {
-					if (!board[r][c].mineCount)
+			if (isRevealed(board[r][c])) {
+				if (!isMine(board[r][c])) {
+					if (!getMineCount(board[r][c]))
 						toPrint = " ";
 					else
-						toPrint = (char)('0' + board[r][c].mineCount);
+						toPrint = (char)('0' + getMineCount(board[r][c]));
 				} else {
 					toPrint = "✹";
 				}
 			} else {
-				if (board[r][c].flagged)
+				if (isFlagged(board[r][c]))
 					toPrint = "✕";
 				else
 					toPrint = "■";
