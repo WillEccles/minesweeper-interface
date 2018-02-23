@@ -55,6 +55,13 @@ namespace minesweeper {
 		if (r && !isRevealed(t)) t |= REVEALED;
 		else if (!r && isRevealed(t)) t -= REVEALED;
 	};
+	inline board_t boardFromIntArray(int arr[][]) {
+		board_t b;
+		for (int i = 0; i < sizeof(arr); i++) {
+			b.push_back(std::vector<tile_t>(sizeof(arr[0])));
+		}
+		return b;
+	};
 
 	// class that represents the whole game
 	class game {
