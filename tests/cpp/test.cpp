@@ -58,7 +58,7 @@ void printBoard(std::vector<std::vector<tile_t>> board) {
 }
 
 int main(void) {
-	game g(10, 10, 2);
+	game g(10, 10, 5);
 
 	printBoard(g.getBoard());
 
@@ -74,6 +74,9 @@ int main(void) {
 				break;
 			case 'f':
 				success = g.toggleflagged((unsigned int)x, (unsigned int)y);
+				break;
+			case 'a':
+				success = g.revealAround((unsigned int)x, (unsigned int)y);
 				break;
 			default:
 				success = false;

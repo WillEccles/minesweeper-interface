@@ -32,6 +32,7 @@ namespace minesweeper {
 	// If you use these instead of the game class, more work is done manually, so it's not recommended.
 	void initBoard(board_t&, unsigned int width, unsigned int height, unsigned int mines, unsigned int startx, unsigned int starty);
 	bool reveal(board_t& board, unsigned int x, unsigned int y);
+	bool revealAround(board_t& board, unsigned int x, unsigned int y);
 	bool toggleflagged(board_t& board, unsigned int x, unsigned int y);
 	bool hasLost(board_t& board, unsigned int x, unsigned int y);
 	bool hasWon(board_t& board, unsigned int mines);
@@ -55,10 +56,10 @@ namespace minesweeper {
 		if (r && !isRevealed(t)) t |= REVEALED;
 		else if (!r && isRevealed(t)) t -= REVEALED;
 	};
-	inline board_t boardFromIntArray(int arr[][]) {
+	inline board_t boardFromIntArray(int **arr, int h, int w) {
 		board_t b;
-		for (int i = 0; i < sizeof(arr); i++) {
-			b.push_back(std::vector<tile_t>(sizeof(arr[0])));
+		for (int i = 0; i < h; i++) {
+			b.push_back(std::vector<tile_t>(w));
 		}
 		return b;
 	};
@@ -86,6 +87,9 @@ namespace minesweeper {
 			// still returns true after the user clicks a mine, so use hasLost() to figure out if the user has actually lost
 			// if the user has lost, this will also reveal all tiles
 			bool reveal(unsigned int x, unsigned int y);
+
+			// reveals 8 tiles around the given tile IF it's revealed and if the number of flags around it is the same as the number of mines around it
+			bool revealAround(unsigned int x, unsigned int y);
 			
 			// flags or unflags a tile, returns true if flagged and false if not flagged (i.e. tile is revealed, etc.)
 			bool toggleflagged(unsigned int x, unsigned int y);

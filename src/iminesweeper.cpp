@@ -152,6 +152,54 @@ bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 	return minesweeper::reveal(board, x, y);
 }
 
+bool minesweeper::revealAround(board_t& board, unsigned int x, unsigned int y) {
+	// auto fail if the tile isn't revealed
+	if (!isRevealed(board[y][x])) return false;
+
+	int flaggedAround = 0;
+	// sum up the number of flags in surrounding tiles
+	if (x > 0) {
+		flaggedAround += isFlagged(board[y][x-1]);
+		if (y > 0) {
+			flaggedAround += isFlagged(board[y-1][x-1]);
+		}
+		if (y < board.size()-1) {
+			flaggedAround += isFlagged(board[y+1][x-1]);
+		}
+	}
+	if (x < board[0].size()-1) {
+		flaggedAround += isFlagged(board[y][x+1]);
+		if (y > 0) {
+			flaggedAround += isFlagged(board[y-1][x+1]);
+		}
+		if (y < board.size()-1) {
+			flaggedAround += isFlagged(board[y+1][x+1]);
+		}
+	}
+	if (y > 0)
+		flaggedAround += isFlagged(board[y-1][x]);
+	if (y < board.size()-1)
+		flaggedAround += isFlagged(board[y+1][x]);
+
+	bool success = false;
+	if (flaggedAround == getMineCount(board[y][x])) {
+		success |= (reveal(board, x+1, y+1)
+				| reveal(board, x, y+1)
+				| reveal(board, x-1, y+1)
+				| reveal(board, x-1, y)
+				| reveal(board, x+1, y)
+				| reveal(board, x-1, y-1)
+				| reveal(board, x, y-1)
+				| reveal(board, x+1, y-1));
+	}
+
+	return success;
+}
+
+bool minesweeper::game::revealAround(unsigned int x, unsigned int y) {
+	return minesweeper::revealAround(board, x, y);
+}
+
 bool minesweeper::toggleflagged(board_t& board, unsigned int x, unsigned int y) {
 	if (isRevealed(board[y][x])) return false;
 	setFlagged(board[y][x], !isFlagged(board[y][x]));
