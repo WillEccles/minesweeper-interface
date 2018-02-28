@@ -49,7 +49,19 @@ extern "C" {
 	 * Method:    reveal
 	 * Signature: ([[III)[[I
 	 */
-	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_reveal(JNIEnv *, jobject, jobjectArray, jint, jint) {
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_reveal(JNIEnv *env, jobject thisObj, jobjectArray jboard, jint x, jint y) {
+		minesweeper::board_t board;
+		setBoardFromIntArr(env, board, jboard);
+
+		// reveall all the things
+		minesweeper::reveal(board, (unsigned int)x, (unsigned int)y);
+
+		jclass intArrClass = (*env)->FindClass(env, "[I");
+		jobjectArray jObjArray = (*env)->NewObjectArray(env, (jsize)board.size(), intArrClass, NULL);
+
+		setIntArrFromBoard(env, jObjArray, board);
+
+		return jObjArray;
 	}
 
 	/*
@@ -57,7 +69,19 @@ extern "C" {
 	 * Method:    revealAround
 	 * Signature: ([[III)[[I
 	 */
-	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAround(JNIEnv *, jobject, jobjectArray, jint, jint) {
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAround(JNIEnv *env, jobject thisObj, jobjectArray jboard, jint x, jint y) {
+		minesweeper::board_t board;
+		setBoardFromIntArr(env, board, jboard);
+
+		// reveall all the things
+		minesweeper::revealAround(board, (unsigned int)x, (unsigned int)y);
+
+		jclass intArrClass = (*env)->FindClass(env, "[I");
+		jobjectArray jObjArray = (*env)->NewObjectArray(env, (jsize)board.size(), intArrClass, NULL);
+
+		setIntArrFromBoard(env, jObjArray, board);
+
+		return jObjArray;
 	}
 
 	/*
@@ -65,7 +89,11 @@ extern "C" {
 	 * Method:    hasWon
 	 * Signature: ([[II)Z
 	 */
-	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_hasWon(JNIEnv *, jobject, jobjectArray, jint) {
+	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_hasWon(JNIEnv *env, jobject thisObj, jobjectArray jboard, jint mineCount) {
+		minesweeper::board_t board;
+		setBoardFromIntArr(env, board, jboard);
+	
+		return minesweeper::hasWon(board, (unsigned int)mineCount);
 	}
 
 	/*
