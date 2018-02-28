@@ -104,6 +104,23 @@ void minesweeper::revealAll(board_t& board) {
 	}
 }
 
+void minesweeper::game::revealAll() {
+	minesweeper::revealAll(board);
+}
+
+void minesweeper::revealMines(board_t& board) {
+	for (auto row : board) {
+		for (auto tile : row) {
+			if (isMine(tile))
+				setRevealed(tile);
+		}
+	}
+}
+
+void minesweeper::game::revealMines() {
+	minesweeper::revealMines(board);
+}
+
 bool minesweeper::reveal(board_t& board, unsigned int x, unsigned int y) {
 	unsigned int height = board.size();
 	unsigned int width = board[0].size();

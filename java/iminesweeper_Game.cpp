@@ -12,6 +12,34 @@ void setIntArrFromBoard(JNIEnv *env, jobjectArray& jarr, minesweeper::board_t& b
 	}
 }
 
+void setBoardFromIntArr(JNIEnv *env, minesweeper::board_t& board, jobjectArray& jarr) {
+	int height = (*env)->GetArrayLength(env, jarr);
+	jintArray dim = (jintArray)(*env)->GetObjectArrayElement(env, jarr, 0);
+	int width = (*env)->GetArrayLength(env, dim);
+	(*env)->DeleteLocalRef(env, dim);
+
+	int **localArray = new int*[height];
+	for (int i = 0; i < height; i++) {
+		jintArray row = (jintArray)(*env)->GetObjectArrayElement(env, jarr, i);
+		jint *element = (*env)->GetIntArrayElements(env, row, 0);
+
+		localArray[i] = new int[width];
+		for (int j = 0; j < width; j++) {
+			localArray[i][j] = element[j];
+		}
+
+		(*env)->ReleaseIntArrayElements(env, row, element, JNI_ABORT);
+		(*env)->DeleteLocalRef(env, row);
+	}
+
+	board = minesweeper::boardFromIntArray(localArray, height, width);
+
+	// free up memory
+	for (int i = 0; i < height; i++)
+		delete localArray;
+	delete [] localArray;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -98,7 +126,39 @@ extern "C" {
 	 * Method:    revealAll
 	 * Signature: ([[I)[[I
 	 */
-	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAll(JNIEnv *, jobject, jobjectArray) {
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAll(JNIEnv *env, jobject thisObj, jobjectArray jboard) {
+		minesweeper::board_t board;
+		setBoardFromIntArr(env, board, jboard);
+
+		// reveall all the things
+		minesweeper::revealAll(board);
+
+		jclass intArrClass = (*env)->FindClass(env, "[I");
+		jobjectArray jObjArray = (*env)->NewObjectArray(env, (jsize)board.size(), intArrClass, NULL);
+
+		setIntArrFromBoard(env, jObjArray, board);
+
+		return jObjArray;
+	}
+
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    revealMines
+	 * Signature: ([[I)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealMines(JNIEnv *env, jobject thisObj, jobjectArray jboard) {
+		minesweeper::board_t board;
+		setBoardFromIntArr(env, board, jboard);
+
+		// reveall all the things
+		minesweeper::revealMines(board);
+
+		jclass intArrClass = (*env)->FindClass(env, "[I");
+		jobjectArray jObjArray = (*env)->NewObjectArray(env, (jsize)board.size(), intArrClass, NULL);
+
+		setIntArrFromBoard(env, jObjArray, board);
+
+		return jObjArray;
 	}
 
 #ifdef __cplusplus

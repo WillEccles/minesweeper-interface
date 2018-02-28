@@ -49,7 +49,6 @@ public class Game {
 	 * @param x Horizontal coordinate (column) zero-indexed
 	 * @param y Vertical coordinate (row) zero-indexed
 	 * @return Whether or not the operation was successful, i.e. false if it was already revealed or flagged.
-	 * @see #reveal(int[][], int, int)
 	 */
 	public boolean reveal(int x, int y) {
 		if (started) {
@@ -74,7 +73,6 @@ public class Game {
 	 * @param x Horizontal coordinate of the tile.
 	 * @param y Vertical coordinate of the tile.
 	 * @return Whether or not the operation was successful, i.e. false if the tile is unrevealed, or if the number of tiles flagged around the tile is not the right amount.
-	 * @see #revealAround(int[][], int, int)
 	 */
 	public boolean revealAround(int x, int y) {
 		if (!started) return false;
@@ -84,6 +82,21 @@ public class Game {
 			board = newBoard;
 			return true;
 		} else return false;
+	}
+
+	/**
+	 * Reveal all of the tiles on the board.
+	 * @see #revealAll(int[][])
+	 */
+	public void revealAll() {
+		board = revealAll(board);
+	}
+
+	/**
+	 * Reveal all mines on the board.
+	 */
+	public void revealMines() {
+		board = revealMines(board);
 	}
 
 	/**
@@ -120,7 +133,6 @@ public class Game {
 	/**
 	 * Determines whether or not the player has won (i.e. the only tiles left unrevealed are mines).
 	 * @return Whether or not the player has won.
-	 * @see #hasWon(int[][], int)
 	 */
 	public boolean hasWon() {
 		return hasWon(board, _mines);
@@ -194,10 +206,18 @@ public class Game {
 	private native int[][] initboard(int w, int h, int m, int startx, int starty);
 
 	/**
-	 * Reveal all tiles on a board.
+	 * Reveal all tiles on a board. This is the backend for {@link #revealAll() revealAll()}.
 	 * @param board The board to reveal all tiles of.
 	 * @return The board after revealing all tiles.
+	 * @see #revealAll()
 	 */
 	private native int[][] revealAll(int[][] board);
 
+	/**
+	 * Reveal all mines on the board. This is the backend for {@link #revealMines() revealMines()}.
+	 * @param board The board to reveal the mines on.
+	 * @return The board post-reveal.
+	 * @see #revealMines()
+	 */
+	private native int[][] revealMines(int[][] board);
 }

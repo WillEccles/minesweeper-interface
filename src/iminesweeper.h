@@ -43,6 +43,7 @@ namespace minesweeper {
 	int flaggedCount(board_t& board);
 	void debugPrint(board_t& board);
 	void revealAll(board_t& board);
+	void revealMines(board_t& board);
 	inline int getMineCount(tile_t t) { return (t & 15); };
 	inline bool isMine(tile_t t) { return (t & MINE); };
 	inline bool isFlagged(tile_t t) { return (t & FLAGGED); };
@@ -90,6 +91,12 @@ namespace minesweeper {
 
 			// reveals 8 tiles around the given tile IF it's revealed and if the number of flags around it is the same as the number of mines around it
 			bool revealAround(unsigned int x, unsigned int y);
+
+			// reveal all tiles
+			void revealAll();
+
+			// reveal all mines
+			void revealMines();
 			
 			// flags or unflags a tile, returns true if flagged and false if not flagged (i.e. tile is revealed, etc.)
 			bool toggleflagged(unsigned int x, unsigned int y);

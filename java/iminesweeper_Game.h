@@ -9,77 +9,85 @@ extern "C" {
 #endif
 #undef iminesweeper_Game_FLAGGED
 #define iminesweeper_Game_FLAGGED 32L
-/*
- * Class:     iminesweeper_Game
- * Method:    reveal
- * Signature: ([[III)[[I
- */
-JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_reveal
-  (JNIEnv *, jobject, jobjectArray, jint, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    reveal
+	 * Signature: ([[III)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_reveal
+		(JNIEnv *, jobject, jobjectArray, jint, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    revealAround
- * Signature: ([[III)[[I
- */
-JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAround
-  (JNIEnv *, jobject, jobjectArray, jint, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    revealAround
+	 * Signature: ([[III)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAround
+		(JNIEnv *, jobject, jobjectArray, jint, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    hasWon
- * Signature: ([[II)Z
- */
-JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_hasWon
-  (JNIEnv *, jobject, jobjectArray, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    hasWon
+	 * Signature: ([[II)Z
+	 */
+	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_hasWon
+		(JNIEnv *, jobject, jobjectArray, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    isMine
- * Signature: (I)Z
- */
-JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isMine
-  (JNIEnv *, jclass, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    isMine
+	 * Signature: (I)Z
+	 */
+	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isMine
+		(JNIEnv *, jclass, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    isFlagged
- * Signature: (I)Z
- */
-JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isFlagged
-  (JNIEnv *, jclass, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    isFlagged
+	 * Signature: (I)Z
+	 */
+	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isFlagged
+		(JNIEnv *, jclass, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    isRevealed
- * Signature: (I)Z
- */
-JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isRevealed
-  (JNIEnv *, jclass, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    isRevealed
+	 * Signature: (I)Z
+	 */
+	JNIEXPORT jboolean JNICALL Java_iminesweeper_Game_isRevealed
+		(JNIEnv *, jclass, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    mineCount
- * Signature: (I)I
- */
-JNIEXPORT jint JNICALL Java_iminesweeper_Game_mineCount
-  (JNIEnv *, jclass, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    mineCount
+	 * Signature: (I)I
+	 */
+	JNIEXPORT jint JNICALL Java_iminesweeper_Game_mineCount
+		(JNIEnv *, jclass, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    initboard
- * Signature: (IIIII)[[I
- */
-JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_initboard
-  (JNIEnv *, jobject, jint, jint, jint, jint, jint);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    initboard
+	 * Signature: (IIIII)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_initboard
+		(JNIEnv *, jobject, jint, jint, jint, jint, jint);
 
-/*
- * Class:     iminesweeper_Game
- * Method:    revealAll
- * Signature: ([[I)[[I
- */
-JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAll
-  (JNIEnv *, jobject, jobjectArray);
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    revealAll
+	 * Signature: ([[I)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealAll
+		(JNIEnv *, jobject, jobjectArray);
+
+	/*
+	 * Class:     iminesweeper_Game
+	 * Method:    revealMines
+	 * Signature: ([[I)[[I
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_iminesweeper_Game_revealMines
+		(JNIEnv *, jobject, jobjectArray);
 
 #ifdef __cplusplus
 }
