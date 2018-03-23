@@ -29,7 +29,7 @@ void minesweeper::initBoard(board_t& board, unsigned int width, unsigned int hei
 		do {
 			x = rand() % width;
 			y = rand() % height;
-		} while (isMine(board[x][y]) || ((x >= (int)startx-1 && x <= (int)startx+1) && (y >= (int)starty-1 && y <= (int)starty+1)));
+		} while (isMine(board[y][x]) || ((x >= (int)startx-1 && x <= (int)startx+1) && (y >= (int)starty-1 && y <= (int)starty+1)));
 
 		setMine(board[y][x]);
 	}
@@ -156,7 +156,7 @@ bool minesweeper::reveal(board_t& board, unsigned int x, unsigned int y) {
 
 bool minesweeper::game::reveal(unsigned int x, unsigned int y) {
 	if (started) {
-		if (isMine(board[y][x])) {
+		if (!isFlagged(board[y][x]) && isMine(board[y][x])) {
 			lost = true;
 			// set all tiles to be revealed
 			minesweeper::revealAll(board);

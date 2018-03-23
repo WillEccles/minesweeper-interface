@@ -11,7 +11,11 @@ CPPTESTFILES=$(wildcard $(TESTDIR)/cpp/*.cpp)
 cpptest: $(SRCH) $(SRC) $(CPPTESTFILES)
 	$(CXX) $(CXXFLAGS) $(CPPTESTFILES) $(SRC) -o cpptest
 
-all: cpptest
+javatest: tests/java/Test.java
+	cd tests/java/
+	javac Test.java
+
+all: cpptest javatest
 
 clean:
 	rm -f cpptest

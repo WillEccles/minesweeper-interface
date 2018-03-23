@@ -16,17 +16,16 @@
 // to get the mine count without the flags:
 // c = t 
 
-// represents a tile on the board, notes above explain operation
-typedef int tile_t;
-// represents a board
-typedef std::vector<std::vector<tile_t>> board_t;
-
 // these are not written using binary constants, since that requires C++14
 const int MINE = 16; // 0001 0000, 16
 const int FLAGGED = 32; // 0010 0000, 32
 const int REVEALED = 64; // 0100 0000, 64
 
 namespace minesweeper {
+	// represents a tile on the board, notes above explain operation
+	typedef int tile_t;
+	// represents a board
+	typedef std::vector<std::vector<tile_t>> board_t;
 
 	// these methods are for use mostly with the Java interface, but will work fine for normal use. They also are wrapped by the game class.
 	// If you use these instead of the game class, more work is done manually, so it's not recommended.
@@ -61,6 +60,8 @@ namespace minesweeper {
 		board_t b;
 		for (int i = 0; i < h; i++) {
 			b.push_back(std::vector<tile_t>(w));
+			for (int j = 0; j < w; j++)
+				b[i][j] = arr[i][j];
 		}
 		return b;
 	};

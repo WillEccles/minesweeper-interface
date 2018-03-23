@@ -52,7 +52,7 @@ public class Game {
 	 */
 	public boolean reveal(int x, int y) {
 		if (started) {
-			if (isMine(board[y][x])) {
+			if (!isFlagged(board[y][x]) && isMine(board[y][x])) {
 				lost = true;
 				board = revealAll(board);
 				return true;
@@ -86,7 +86,6 @@ public class Game {
 
 	/**
 	 * Reveal all of the tiles on the board.
-	 * @see #revealAll(int[][])
 	 */
 	public void revealAll() {
 		board = revealAll(board);
@@ -120,14 +119,11 @@ public class Game {
 	}
 
 	/**
-	 * Determines if the player has lost based on the tile they clicked (essentially a duplicate of {@link #isMine(int) isMine()}).
-	 * @param x The horizontal coordinate (column) of the tile.
-	 * @param y The vertical coordinate (row) of the tile.
+	 * Determines if the player has lost.
 	 * @return Whether or not the player has lost.
-	 * @see #isMine(int)
 	 */
-	public boolean hasLost(int x, int y) {
-		return isMine(board[y][x]);
+	public boolean hasLost() {
+		return lost;
 	}
 
 	/**
