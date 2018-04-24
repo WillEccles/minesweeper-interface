@@ -2,6 +2,7 @@
 #define IMINESWEEPER
 
 #include <vector>
+#include <limits>
 
 // NOTES: 4 bits from right to left (2^1-2^4) are the number of mines, i.e. a tile with 5 mines: 0101
 // this will use int as the value since it will work fine in java with the JNI for sure
@@ -16,10 +17,22 @@
 // to get the mine count without the flags:
 // c = t 
 
-// these are not written using binary constants, since that requires C++14
-const int MINE = 16; // 0001 0000, 16
-const int FLAGGED = 32; // 0010 0000, 32
-const int REVEALED = 64; // 0100 0000, 64
+#define MINE 16 // 0001 0000
+#define FLAG 32 // 0010 0000
+#define REVEALED 64 // 0100 0000
+
+#define MINE_BIT(t) (t&16)
+#define FLAG_BIT(t) (t&32)
+#define REVEALED_BIT(t) (t&64)
+#define MINE_COUNT(t) (t&15)
+
+#define SET_MINE(t) (t |= MINE)
+#define SET_FLAG(t) (t |= FLAG)
+#define SET_REVEALED(t) (t |= REVEALED)
+
+#define SET_NO_MINE(t) (t &= (~MINE))
+#define SET_NO_FLAG(t) (t &= (~FLAG))
+#define SET_UNREVEALED(t) (t &= (~REVEALED))
 
 namespace minesweeper {
 	// represents a tile on the board, notes above explain operation
@@ -43,18 +56,18 @@ namespace minesweeper {
 	void debugPrint(board_t& board);
 	void revealAll(board_t& board);
 	void revealMines(board_t& board);
-	inline int getMineCount(tile_t t) { return (t & 15); };
-	inline bool isMine(tile_t t) { return (t & MINE); };
-	inline bool isFlagged(tile_t t) { return (t & FLAGGED); };
-	inline bool isRevealed(tile_t t) { return (t & REVEALED); };
-	inline void setMine(tile_t& t) { t |= MINE; };
+	inline int getMineCount(tile_t t) { return MINE_COUNT(t); };
+	inline bool isMine(tile_t t) { return MINE_BIT(t); };
+	inline bool isFlagged(tile_t t) { return FLAG_BIT(t); };
+	inline bool isRevealed(tile_t t) { return REVEALED_BIT(t); };
+	inline void setMine(tile_t& t) { SET_MINE(t); };
 	inline void setFlagged(tile_t& t, bool f = true) {
-		if (f && !isFlagged(t)) t |= FLAGGED;
-		else if (!f && isFlagged(t)) t -= FLAGGED;
+		if (f && !isFlagged(t)) SET_FLAG(t);
+		else if (!f && isFlagged(t)) SET_NO_FLAG(t);
 	};
 	inline void setRevealed(tile_t& t, bool r = true) {
-		if (r && !isRevealed(t)) t |= REVEALED;
-		else if (!r && isRevealed(t)) t -= REVEALED;
+		if (r && !isRevealed(t)) SET_REVEALED(t);
+		else if (!r && isRevealed(t)) SET_UNREVEALED(t);
 	};
 	inline board_t boardFromIntArray(int **arr, int h, int w) {
 		board_t b;
